@@ -16,6 +16,24 @@ export const ChessBoard = ({ board,socket,setBoard,chess
 }) => {
   const [from, setFrom ] = useState<Square | null>(null);
   const [to, setTo ] = useState<Square | null>(null);
+  const pieceMap = {
+  w: {
+    p: "♙",
+    r: "♖",
+    n: "♘",
+    b: "♗",
+    q: "♕",
+    k: "♔",
+  },
+  b: {
+    p: "♟",
+    r: "♜",
+    n: "♞",
+    b: "♝",
+    q: "♛",
+    k: "♚",
+  },
+};
 
 
 
@@ -65,12 +83,7 @@ export const ChessBoard = ({ board,socket,setBoard,chess
                       <div className=" text-2xl font-bold w-8 h-8 flex items-center justify-center">
                         {square ? (
                           <span>
-                            {square.type === "p" && "♟"}
-                            {square.type === "r" && "♜"}
-                            {square.type === "n" && "♞"}
-                            {square.type === "b" && "♝"}
-                            {square.type === "q" && "♛"}
-                            {square.type === "k" && "♚"}
+                            {pieceMap[square.color][square.type]}
                           </span>
                         ) : null}
                       </div>
@@ -84,4 +97,4 @@ export const ChessBoard = ({ board,socket,setBoard,chess
       })}
     </div>
   );
-};
+}

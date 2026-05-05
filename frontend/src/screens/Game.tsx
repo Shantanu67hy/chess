@@ -14,6 +14,8 @@ export const Game = () => {
   const [board, setBoard] = useState(chess.board());
   const [started, setStarted] = useState(false);
 
+  
+
   useEffect(() => {
     if (!socket) {
       return;
@@ -24,14 +26,15 @@ export const Game = () => {
       switch (message.type) {
         case init_game:
           //setChess(new Chess());
-          
+
           setBoard(chess.board());
           setStarted(true);
           break;
 
         case MOVE:
-          chess.load(message.board); // ✅ load full board
-          setBoard(chess.board());
+          const newChess = new Chess(message.board); // ✅ fresh instance
+          setChess(newChess);
+          setBoard(newChess.board());
           break;
 
         case game_over:
