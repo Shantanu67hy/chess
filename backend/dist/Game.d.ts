@@ -1,0 +1,15 @@
+import { WebSocket } from "ws";
+import { Chess } from "chess.js";
+export declare class Game {
+    player1: WebSocket;
+    player2: WebSocket;
+    board: Chess;
+    startTime: Date;
+    constructor(player1: WebSocket, player2: WebSocket);
+    makeMove(socket: WebSocket, move: {
+        from: string;
+        to: string;
+        promotion?: string;
+    }): void;
+}
+//# sourceMappingURL=Game.d.ts.map

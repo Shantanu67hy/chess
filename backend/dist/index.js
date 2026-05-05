@@ -1,0 +1,9 @@
+import { WebSocketServer } from 'ws';
+import { GameManager } from "./GameManager.js";
+const ws = new WebSocketServer({ port: 8080 });
+const gameManager = new GameManager();
+ws.on('connection', function connection(ws) {
+    gameManager.addUser(ws);
+    ws.on("disconnect", () => gameManager.removeUser(ws));
+});
+//# sourceMappingURL=index.js.map
