@@ -44,67 +44,58 @@ export const ChessBoard = ({
       {board.map((row, i) => {
         return (
           <div key={i} className="flex">
-            {row.map((square, j) => {
-              const squareRepresentation = (String.fromCharCode(97 + (j % 8)) +
-                "" +
-                (8 - Math.floor(i + j / 8))) as Square;
+          {row.map((square, j) => {
+  const squareRepresentation = (
+    String.fromCharCode(97 + j) + (8 - i)
+  ) as Square;
 
-              return (
-                <div
-                  onClick={() => {
-                    if (!from) {
-                      setFrom(squareRepresentation);
-                    } else {
-                      socket.send(
-                        JSON.stringify({
-                          type: MOVE,
-                          payload: {
-                            from: from,
-                            to: squareRepresentation,
-                          },
-                        }),
-                      );
-                      setFrom(null);
+  return (
+    <div
+      key={`${i}-${j}`}   // ✅ KEY HERE (top-level)
+      onClick={() => {
+        if (!from) {
+          setFrom(squareRepresentation);
+        } else {
+          socket.send(
+            JSON.stringify({
+              type: MOVE,
+              payload: {
+                from: from,
+                to: squareRepresentation,
+              },
+            }),
+          );
 
-                      chess.move({
-                        from: from,
-                        to: squareRepresentation,
-                      });
-                      setBoard(chess.board());
+          chess.move({
+            from: from,
+            to: squareRepresentation,
+          });
 
-                      console.log({
-                        from: from,
-                        to: squareRepresentation,
-                      });
-                    }
-                  }}
-                >
-                  <div
-                    key={j}
-                    className={`w-16 h-16 flex items-center justify-center ${(i + j) % 2 === 0 ? "bg-white" : "bg-green-500"}`}
-                  >
-                    <div className=" justify-center flex items-center">
-                      <div className=" text-2xl font-bold w-8 h-8 flex items-center justify-center">
-                        {square ? (
-                          <span
-                            className={`text-2xl font-bold ${
-                              square.color === "w"
-                                ? "text-white drop-shadow-[0_0_2px_black]"
-                                : "text-black"
-                            }`}
-                          >
-                            {pieceMap[square.color][square.type]}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          setBoard(chess.board());
+          setFrom(null);
+        }
+      }}
+      className={`w-16 h-16 flex items-center justify-center ${
+        (i + j) % 2 === 0 ? "bg-white" : "bg-green-500"
+      }`}
+    >
+      {square && (
+        <span
+          className={`text-2xl font-bold ${
+            square.color === "w"
+              ? "text-white drop-shadow-[0_0_2px_black]"
+              : "text-black"
+          }`}
+        >
+          {pieceMap[square.color][square.type]}
+        </span>
+      )}
+    </div>
+  );
+})}
           </div>
         );
       })}
     </div>
   );
-};
+}
